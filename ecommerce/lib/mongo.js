@@ -40,13 +40,7 @@ class MongoLib {
       })
       .then((result) => result.insertedIds);
   }
-  createMany(collection, array) {
-    return this.connect()
-      .then((db) => {
-        return db.collection(collection).insertMany(array);
-      })
-      .then((result) => result.insertedIds);
-  }
+
   update(collection, id, data) {
     return this.connect()
       .then((db) => {

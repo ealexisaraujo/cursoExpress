@@ -6,8 +6,8 @@ class ProductsService {
     this.mongoDB = new MongoLib();
   }
 
-  async getProducts({ categories }) {
-    const query = categories && { categories: { $in: categories } };
+  async getProducts({ tags }) {
+    const query = tags && { tags: { $in: tags } };
     const products = await this.mongoDB.getAll(this.collection, query);
     return products || [];
   }
@@ -18,27 +18,29 @@ class ProductsService {
   }
 
   async createProduct(products) {
-    const createProductId = await this.mongoDB.createMany(
+    const createProductId = await this.mongoDB.create(
       this.collection,
       products,
     );
     return createProductId;
   }
 
-  async updateProduct({ ProductId, product }) {
-    const updatedProductId = await this.mongoDB.update(
+  async updateProduct({ productId, product }) {
+    const updateProductId = await this.mongoDB.update(
       this.collection,
-      ProductId,
+      productId,
       product,
     );
-    return updatedProductId;
+
+    return updateProductId;
   }
 
-  async deleteProduct({ ProductId }) {
+  async deleteProduct({ productId }) {
     const deletedProductId = await this.mongoDB.delete(
       this.collection,
-      ProductId,
+      productId,
     );
+
     return deletedProductId;
   }
 }
