@@ -3,6 +3,8 @@ const path = require('path');
 const productsRouter = require('./routes/views/products');
 const productsApiRouter = require('./routes/api/products');
 
+const { config } = require('./config/index');
+
 const app = express();
 app.use(express.json());
 
@@ -19,6 +21,6 @@ app.get('/', function (req, res) {
   res.redirect('/products');
 });
 
-const server = app.listen(8000, function () {
+const server = app.listen(config.port, function () {
   console.log(`Listening http://localhost:${server.address().port}`);
 });

@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  backend_api:
+    container_name: product_collector_backend_api
+    build:
+      context: ./
+      dockerfile: ./docker/backend/dockerfile
+    volumes:
+      - .:/var/www
+    working_dir: /var/www
+    command: /bin/sh -c "npm install && npm run dev"
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: product_collector_mongo
+    build:
+      context: ./
+      dockerfile: ./docker/mongo/dockerfile
+    volumes:
+      - ./docker/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - product_collector_mongo:/data/db
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: pc-user
+      MONGO_INITDB_ROOT_PASSWORD: pc-password
+      MONGO_INITDB_DATABASE: product-collector
+    ports:
+      - 27027:27017
+
+volumes:
+  product_collector_mongo:
