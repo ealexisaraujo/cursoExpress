@@ -9,6 +9,8 @@ const config = {
   dbHost: process.env.DB_HOST,
   dbName: process.env.DB_NAME,
   dbConnection: process.env.DB_CONNECTION || 'mongodb+srv',
+  sentryDns: process.env.SENTRY_DNS,
+  sentryId: process.env.SENTRY_ID,
 };
 
 module.exports = { config };
