@@ -12,10 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "consolidate": "^0.15.1",
     "express": "^4.17.1",
     "pug": "^2.0.4"
   },
   "devDependencies": {
+    "handlebars": "^4.7.6",
     "nodemon": "^2.0.3"
   }
 }
