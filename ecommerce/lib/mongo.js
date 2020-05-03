@@ -16,20 +16,16 @@ class MongoLib {
     this.dbName = DB_NAME;
   }
 
-  connect() {
+  async connect() {
     if (!MongoLib.connection) {
-      MongoLib.connection = new Promise((resolve, reject) => {
-        this.client.connect((err) => {
-          if (err) {
-            reject(err);
-          }
-
-          console.log('Connected succesfully to mongo');
-          resolve(this.client.db(this.dbName));
-        });
-      });
+      try {
+        await this.client.connect();
+        console.log('Connected successfully to mongo');
+        MongoLib.connection = this.client.db(this.dbName);
+      } catch (error) {
+        console.log(error);
+      }
     }
-
     return MongoLib.connection;
   }
 
