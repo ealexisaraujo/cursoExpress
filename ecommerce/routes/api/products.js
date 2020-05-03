@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const ProductsService = require('../../services/products');
 
+const validationHandler = require('../../utils/middlewares/validationHandler');
+
+const {
+  productIdSchema,
+  productTagSchema,
+  createProductSchema,
+  updateProductSchema,
+} = require('../../utils/schemas/products');
+
 const productService = new ProductsService();
 
 router.get('/', async function (req, res, next) {
@@ -21,25 +30,32 @@ router.get('/', async function (req, res, next) {
   }
 });
 
-router.get('/:productId', async function (req, res, next) {
-  const { productId } = req.params;
+router.get(
+  '/:productId',
+  validationHandler({ productId: productIdSchema }, 'params'),
+  async function (req, res, next) {
+    const { productId } = req.params;
 
-  console.log('req', req.params);
+    console.log('req', req.params);
 
-  try {
-    throw new Error('This is an error from the API');
-    const product = await productService.getProduct({ productId });
+    try {
+      const product = await productService.getProduct({ productId });
 
-    res.status(200).json({
-      data: product,
-      message: 'product retrieved',
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+      res.status(200).json({
+        data: product,
+        message: 'product retrieved',
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
-router.post('/', async function (req, res, next) {
+router.post('/', validationHandler(createProductSchema), async function (
+  req,
+  res,
+  next,
+) {
   const { body: product } = req;
 
   console.log('req', req.body);
@@ -56,41 +72,50 @@ router.post('/', async function (req, res, next) {
   }
 });
 
-router.put('/:productId', async function (req, res, next) {
-  const { productId } = req.params;
-  const { body: product } = req;
+router.put(
+  '/:productId',
+  validationHandler({ productId: productIdSchema }, 'params'),
+  validationHandler(updateProductSchema),
+  async function (req, res, next) {
+    const { productId } = req.params;
+    const { body: product } = req;
 
-  console.log('req', req.params, req.body);
+    console.log('req', req.params, req.body);
 
-  try {
-    const updatedProduct = await productService.updateProduct({
-      productId,
-      product,
-    });
-    res.status(200).json({
-      data: updatedProduct,
-      message: 'product updated',
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+    try {
+      const updatedProduct = await productService.updateProduct({
+        productId,
+        product,
+      });
+      res.status(200).json({
+        data: updatedProduct,
+        message: 'product updated',
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
-router.delete('/:productId', async function (req, res, next) {
-  const { productId } = req.params;
+router.delete(
+  '/:productId',
+  validationHandler({ productId: productIdSchema }, 'params'),
+  async function (req, res, next) {
+    const { productId } = req.params;
 
-  console.log('req', req.params);
+    console.log('req', req.params);
 
-  try {
-    const deletedProduct = await productService.deleteProduct({ productId });
+    try {
+      const deletedProduct = await productService.deleteProduct({ productId });
 
-    res.status(200).json({
-      data: deletedProduct,
-      message: 'product deleted',
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+      res.status(200).json({
+        data: deletedProduct,
+        message: 'product deleted',
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 module.exports = router;

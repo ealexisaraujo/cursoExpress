@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/boom": "^9.1.0",
+    "@hapi/joi": "^17.1.1",
     "@sentry/node": "^5.15.5",
     "consolidate": "^0.15.1",
     "dotenv": "^8.2.0",
