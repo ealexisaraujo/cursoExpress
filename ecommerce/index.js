@@ -5,6 +5,12 @@ const productsApiRouter = require('./routes/api/products');
 
 const { config } = require('./config/index');
 
+const {
+  logErrors,
+  wrapErrors,
+  errorHandler,
+} = require('./utils/middlewares/errorHandlers');
+
 const app = express();
 app.use(express.json());
 
@@ -20,6 +26,11 @@ app.use('/api/products', productsApiRouter);
 app.get('/', function (req, res) {
   res.redirect('/products');
 });
+
+// Errors middleware
+app.use(logErrors);
+app.use(wrapErrors);
+app.use(errorHandler);
 
 const server = app.listen(config.port, function () {
   console.log(`Listening http://localhost:${server.address().port}`);

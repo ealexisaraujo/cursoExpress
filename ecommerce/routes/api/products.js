@@ -27,6 +27,7 @@ router.get('/:productId', async function (req, res, next) {
   console.log('req', req.params);
 
   try {
+    throw new Error('This is an error from the API');
     const product = await productService.getProduct({ productId });
 
     res.status(200).json({
