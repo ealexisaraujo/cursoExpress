@@ -34,7 +34,7 @@ class MongoLib {
       .then((db) => {
         return db.collection(collection).insertOne(data);
       })
-      .then((result) => result.insertedIds);
+      .then((result) => result.insertedId);
   }
 
   update(collection, id, data) {

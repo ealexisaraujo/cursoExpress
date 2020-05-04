@@ -57,14 +57,11 @@ router.post('/', validationHandler(createProductSchema), async function (
   next,
 ) {
   const { body: product } = req;
-
-  console.log('req', req.body);
-
   try {
-    const createdProduct = await productService.createProduct({ product });
+    const createdProductId = await productService.createProduct({ product });
 
     res.status(201).json({
-      data: createdProduct,
+      data: createdProductId,
       message: 'product created',
     });
   } catch (err) {
