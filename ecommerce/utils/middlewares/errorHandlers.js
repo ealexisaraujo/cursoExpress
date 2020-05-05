@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const debug = require('debug')('app:error');
 const Sentry = require('@sentry/node');
 const { config } = require('../../config/index');
 
@@ -18,7 +19,7 @@ function withErrorStack(error, stack) {
 
 function logErrors(err, req, res, next) {
   Sentry.captureException(err);
-  console.log(err);
+  debug(err.stack);
   next(err);
 }
 
@@ -43,7 +44,7 @@ function clientErrorHandler(err, req, res, next) {
   }
 }
 
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res) {
   // eslint-disable-line
   const {
     output: { statusCode, payload },

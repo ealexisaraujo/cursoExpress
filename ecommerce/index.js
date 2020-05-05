@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const boom = require('@hapi/boom');
+const debug = require('debug')('app:server');
 const productsRouter = require('./routes/views/products');
 const productsApiRouter = require('./routes/api/products');
 const authApiRouter = require('./routes/api/auth');
@@ -53,5 +54,5 @@ app.use(clientErrorHandler);
 app.use(errorHandler);
 
 const server = app.listen(config.port, function () {
-  console.log(`Listening http://localhost:${server.address().port}`);
+  debug(`Listening http://localhost:${server.address().port}`);
 });
