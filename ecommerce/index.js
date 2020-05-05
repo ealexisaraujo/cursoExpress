@@ -26,7 +26,7 @@ app.set('view engine', 'pug');
 
 // routes
 app.use('/products', productsRouter);
-app.use('/api/products', productsApiRouter);
+productsApiRouter(app);
 app.use('/api/auth', authApiRouter);
 
 // redirect
@@ -34,7 +34,7 @@ app.get('/', function (req, res) {
   res.redirect('/products');
 });
 
-app.use(function (req, res, next) {
+app.use(function (req, res) {
   if (isRequestAjaxOrApi(req)) {
     const {
       output: { statusCode, payload },
