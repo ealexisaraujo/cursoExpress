@@ -13,12 +13,19 @@ const {
 // JWT strategy
 require('../../utils/auth/strategies/jwt');
 
+const cacheResponse = require('../../utils/cacheResponse');
+const {
+  FIVE_MINUTES_IN_SECONDS,
+  SIXTY_MINUTES_IN_SECONDS,
+} = require('../../utils/time');
+
 function productsApi(app) {
   const router = express.Router();
   app.use('/api/products', router);
 
   const productService = new ProductsService();
   router.get('/', async function (req, res, next) {
+    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
 
     try {
@@ -37,6 +44,7 @@ function productsApi(app) {
     '/:productId',
     validationHandler({ productId: productIdSchema }, 'params'),
     async function (req, res, next) {
+      cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
       const { productId } = req.params;
 
       try {
@@ -49,13 +57,13 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    },
+    }
   );
 
   router.post('/', validationHandler(createProductSchema), async function (
     req,
     res,
-    next,
+    next
   ) {
     const { body: product } = req;
     try {
@@ -91,7 +99,7 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    },
+    }
   );
 
   router.delete(
@@ -113,7 +121,7 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    },
+    }
   );
 }
 
