@@ -21,7 +21,7 @@
     "@hapi/boom": "^9.1.0",
     "@hapi/joi": "^17.1.1",
     "@sentry/node": "^5.15.5",
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "consolidate": "^0.15.1",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
